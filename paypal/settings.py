@@ -34,7 +34,11 @@ class PayPalConfig(object):
         '3TOKEN': {
             'SANDBOX': 'https://api-3t.sandbox.paypal.com/nvp',
             'PRODUCTION': 'https://api-3t.paypal.com/nvp',
-        }
+        },
+        'ACCESS_TOKEN': {
+            'SANDBOX': 'https://api-3t.sandbox.paypal.com/nvp',
+            'PRODUCTION': 'https://api-3t.paypal.com/nvp',
+        },
     }
 
     _PAYPAL_URL_BASE = {
