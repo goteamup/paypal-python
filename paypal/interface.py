@@ -118,7 +118,7 @@ class PayPalInterface(object):
             timestamp, signature = getAuthHeader(self.config.API_USERNAME,
                                                  self.config.API_PASSWORD,
                                                  self.config.ACCESS_TOKEN,
-                                                 self.config.SECRET_TOKEN,
+                                                 self.config.TOKEN_SECRET,
                                                  'GET',
                                                  self.config.API_ENDPOINT)
             headers['X-PAYPAL-AUTHORIZATION'] = "timestamp="+timestamp+",token="+self.config.ACCESS_TOKEN+",signature="+signature
