@@ -106,6 +106,11 @@ class PayPalInterface(object):
             url_values['USER'] = self.config.API_USERNAME
             url_values['PWD'] = self.config.API_PASSWORD
             url_values['SIGNATURE'] = self.config.API_SIGNATURE
+        elif self.config.API_AUTHENTICATION_MODE == "3TOKEN_SUBJECT":
+            url_values['USER'] = self.config.API_USERNAME
+            url_values['PWD'] = self.config.API_PASSWORD
+            url_values['SIGNATURE'] = self.config.API_SIGNATURE
+            url_values['SUBJECT'] = self.config.SUBJECT
         elif self.config.API_AUTHENTICATION_MODE == "UNIPAY":
             url_values['SUBJECT'] = self.config.UNIPAY_SUBJECT
 
@@ -119,17 +124,21 @@ class PayPalInterface(object):
                                                  self.config.API_PASSWORD,
                                                  self.config.ACCESS_TOKEN,
                                                  self.config.TOKEN_SECRET,
-                                                 'GET',
+                                                 'POST',
                                                  self.config.API_ENDPOINT)
-            headers['X-PAYPAL-AUTHORIZATION'] = "timestamp="+timestamp+",token="+self.config.ACCESS_TOKEN+",signature="+signature
+            headers['X-PAYPAL-AUTHORIZATION'] = str('token='+self.config.ACCESS_TOKEN+',signature='+signature+',timestamp='+timestamp)
+            headers['X-PAYPAL-APPLICATION-ID'] = self.config.APPLICATION_ID
+            headers['X-PAYPAL-REQUEST-DATA-FORMAT'] = 'NV'
+            headers['X-PAYPAL-RESPONSE-DATA-FORMAT'] = 'NV'
+        
 
         # This shows all of the key/val pairs we're sending to PayPal.
         if logger.isEnabledFor(logging.DEBUG):
             logger.debug('PayPal NVP Query Key/Vals:\n%s' % pformat(url_values))
 
-        req = requests.get(
+        req = requests.post(
             self.config.API_ENDPOINT,
-            params=url_values,
+            data='&'.join([k+'='+str(v) for k,v in url_values.items()]),
             timeout=self.config.HTTP_TIMEOUT,
             verify=self.config.API_CA_CERTS,
             headers=headers,

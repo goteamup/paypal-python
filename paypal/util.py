@@ -41,13 +41,16 @@ def getAuthHeader(apiUser, apiPass, accessTok, secTok, httpMethod, scriptURI):
     oauthVer="1.0"
     oauthSigMethod="HMAC-SHA1"
     timeStamp=int(time.time())
+    timeStamp = int('1361464580')
     
     # used to sign the signature base below to build the final signature
     key=apiPass
     key=getAppendedStr(key, getEncodedString(secTok))
+    key=str(key)
     
     sigBase=httpMethod
-    sigBase=getAppendedStr(sigBase,getEncodedString(scriptURI))
+    sigBase=getAppendedStr(sigBase, getEncodedString(scriptURI))
+    
     # now, NVP params
     sigParm="oauth_consumer_key="+apiUser
     sigParm=getAppendedStr(sigParm,"oauth_signature_method="+oauthSigMethod)
@@ -57,6 +60,9 @@ def getAuthHeader(apiUser, apiPass, accessTok, secTok, httpMethod, scriptURI):
     # encode and append
     sigBase=getAppendedStr(sigBase, getEncodedString(sigParm))
     
+    print 'SIG BASE: ', sigBase
+    print 'KEY: ',key
     sigFinal=getSignature(key, sigBase)
+    print 'SIG: ', sigFinal
 
     return (str(timeStamp),sigFinal)
