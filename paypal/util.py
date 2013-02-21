@@ -41,7 +41,6 @@ def getAuthHeader(apiUser, apiPass, accessTok, secTok, httpMethod, scriptURI):
     oauthVer="1.0"
     oauthSigMethod="HMAC-SHA1"
     timeStamp=int(time.time())
-    timeStamp = int('1361464580')
     
     # used to sign the signature base below to build the final signature
     key=apiPass
@@ -60,9 +59,6 @@ def getAuthHeader(apiUser, apiPass, accessTok, secTok, httpMethod, scriptURI):
     # encode and append
     sigBase=getAppendedStr(sigBase, getEncodedString(sigParm))
     
-    print 'SIG BASE: ', sigBase
-    print 'KEY: ',key
     sigFinal=getSignature(key, sigBase)
-    print 'SIG: ', sigFinal
 
     return (str(timeStamp),sigFinal)
