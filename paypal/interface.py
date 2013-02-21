@@ -15,6 +15,7 @@ from paypal.settings import PayPalConfig
 from paypal.response import PayPalResponse
 from paypal.exceptions import PayPalError, PayPalAPIResponseError
 from paypal.compat import is_py3
+from util import getAuthHeader
 
 if is_py3:
     #noinspection PyUnresolvedReferences
@@ -111,6 +112,16 @@ class PayPalInterface(object):
         # All values passed to PayPal API must be uppercase.
         for key, value in kwargs.items():
             url_values[key.upper()] = value
+        
+        headers = {}
+        if self.config.API_AUTHENTICATION_MODE == 'ACCESS_TOKEN':
+            timestamp, signature = getAuthHeader(self.config.API_USERNAME,
+                                                 self.config.API_PASSWORD,
+                                                 self.config.ACCESS_TOKEN,
+                                                 self.config.SECRET_TOKEN,
+                                                 'GET',
+                                                 self.config.API_ENDPOINT)
+            headers['X-PAYPAL-AUTHORIZATION'] = "timestamp="+timestamp+",token="+self.config.ACCESS_TOKEN+",signature="+signature
 
         # This shows all of the key/val pairs we're sending to PayPal.
         if logger.isEnabledFor(logging.DEBUG):
@@ -121,6 +132,7 @@ class PayPalInterface(object):
             params=url_values,
             timeout=self.config.HTTP_TIMEOUT,
             verify=self.config.API_CA_CERTS,
+            headers=headers,
         )
 
         # Call paypal API

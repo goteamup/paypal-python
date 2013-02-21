@@ -23,7 +23,7 @@ class PayPalConfig(object):
     # Used to validate correct values for certain config directives.
     _valid_ = {
         'API_ENVIRONMENT': ['SANDBOX', 'PRODUCTION'],
-        'API_AUTHENTICATION_MODE': ['3TOKEN', 'CERTIFICATE'],
+        'API_AUTHENTICATION_MODE': ['3TOKEN', 'CERTIFICATE', 'ACCESS_TOKEN'],
     }
 
     # Various API servers.
@@ -117,6 +117,12 @@ class PayPalConfig(object):
         # set the 3TOKEN required fields
         if self.API_AUTHENTICATION_MODE == '3TOKEN':
             for arg in ('API_USERNAME', 'API_PASSWORD', 'API_SIGNATURE'):
+                if arg not in kwargs:
+                    raise PayPalConfigError('Missing in PayPalConfig: %s ' % arg)
+                setattr(self, arg, kwargs[arg])
+        
+        if self.API_AUTHENTICATION_MODE == 'ACCESS_TOKEN':
+            for arg in ('API_USERNAME', 'API_PASSWORD', 'ACCESS_TOKEN', 'ACCESS_SIGNATURE'):
                 if arg not in kwargs:
                     raise PayPalConfigError('Missing in PayPalConfig: %s ' % arg)
                 setattr(self, arg, kwargs[arg])
