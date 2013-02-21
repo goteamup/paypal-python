@@ -126,7 +126,7 @@ class PayPalConfig(object):
                 setattr(self, arg, kwargs[arg])
         
         if self.API_AUTHENTICATION_MODE == 'ACCESS_TOKEN':
-            for arg in ('API_USERNAME', 'API_PASSWORD', 'ACCESS_TOKEN', 'ACCESS_SIGNATURE'):
+            for arg in ('API_USERNAME', 'API_PASSWORD', 'ACCESS_TOKEN', 'TOKEN_SECRET'):
                 if arg not in kwargs:
                     raise PayPalConfigError('Missing in PayPalConfig: %s ' % arg)
                 setattr(self, arg, kwargs[arg])
