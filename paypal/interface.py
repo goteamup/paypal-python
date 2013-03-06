@@ -396,6 +396,32 @@ class PayPalInterface(object):
 
         """
         return self._call('DoExpressCheckoutPayment', **kwargs)
+    
+    def create_billing_agreement(self, **kwargs):
+        """Create a billing agreement
+
+        TOKEN is the token that was returned earlier by
+        :meth:`set_express_checkout`. This identifies the transaction.
+
+        Required
+        --------
+        * TOKEN
+
+        """
+        return self._call('CreateBillingAgreement', **kwargs)
+    
+    def do_reference_transaction(self, **kwargs):
+        """Create a transaction from a referenced transaction
+
+        REFERENCEID is the id of the referenced transaction
+        
+
+        Required
+        --------
+        * REFERENCEID
+
+        """
+        return self._call('DoReferenceTransaction', **kwargs)
 
     def generate_express_checkout_redirect_url(self, token):
         """Returns the URL to redirect the user to for the Express checkout.
