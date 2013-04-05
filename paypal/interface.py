@@ -138,7 +138,7 @@ class PayPalInterface(object):
 
         req = requests.post(
             self.config.API_ENDPOINT,
-            data='&'.join([k+'='+str(v) for k,v in url_values.items()]),
+            data=url_values,
             timeout=self.config.HTTP_TIMEOUT,
             verify=self.config.API_CA_CERTS,
             headers=headers,
