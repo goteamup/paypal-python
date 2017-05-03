@@ -1,8 +1,10 @@
 import sys
 import urllib,httplib
 import hashlib,hmac,base64
-import random,md5,time
+import random,time
 import re
+
+md5 = hashlib.md5
 
 #CREDIT TO https://github.com/paypal/python-signature-generator-for-authentication-header
 
