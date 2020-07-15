@@ -15,7 +15,7 @@ from paypal.settings import PayPalConfig
 from paypal.response import PayPalResponse
 from paypal.exceptions import PayPalError, PayPalAPIResponseError
 from paypal.compat import is_py3
-from util import getAuthHeader
+from .util import getAuthHeader
 
 if is_py3:
     #noinspection PyUnresolvedReferences
