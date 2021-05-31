@@ -3,6 +3,7 @@ import hashlib
 import hmac
 import re
 import time
+import six
 
 md5 = hashlib.md5
 
@@ -13,8 +14,12 @@ def getSignature(key, sigBase):
     if (len(sigBase) == 0) or (len(key) == 0):
         raise Exception('sigBase', 'isNull')
 
-    hashed = hmac.new(key, sigBase, hashlib.sha1)
-    outSig = base64.b64encode(hashed.digest())
+    hashed = hmac.new(
+        six.ensure_binary(key),
+        six.ensure_binary(sigBase),
+        hashlib.sha1
+    )
+    outSig = base64.b64encode(hashed.digest()).decode()
     return outSig
 
 
